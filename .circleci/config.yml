@@ -58,9 +58,8 @@ jobs:
           command: |
             aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-            aws configure set aws_session_token $AWS_SESSION_TOKEN
             aws configure set region $AWS_DEFAULT_REGION
-            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 374000545310.dkr.ecr.us-east-1.amazonaws.com
+            aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/p6h4d5f7
             docker build -t project5 .
             docker tag project5:latest $AWS_ECR/project5:latest
       - run:
@@ -124,7 +123,6 @@ jobs:
           command: |
             aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-            aws configure set aws_session_token $AWS_SESSION_TOKEN
             aws configure set region $AWS_DEFAULT_REGION
       - kubernetes/install-kubectl
       - aws-eks/update-kubeconfig-with-authenticator:
@@ -137,8 +135,8 @@ workflows:
   default:
     jobs:
       - linting-code
-      # - build-image:
-      #     requires: [linting-code]
+       - build-image:
+           requires: [linting-code]
       # - deploy-infrastructure:
       #     requires: [build-image]
       # - deploy-config:
