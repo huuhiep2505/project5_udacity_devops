@@ -135,8 +135,8 @@ workflows:
   default:
     jobs:
       - linting-code
-       - build-image:
-           requires: [linting-code]
+      - build-image:
+          requires: [linting-code]
       # - deploy-infrastructure:
       #     requires: [build-image]
       # - deploy-config:
